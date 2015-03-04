@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'org.akhikhl.gretty:gretty:1.1.8'
+    }
+}
+
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'maven'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+clean.dependsOn 'cleanAdditional'
+task cleanAdditional(type: Delete) {
+    delete 'bin'
+    delete 'target'
+}
+
+repositories {
+     maven { url "https://repository.apache.org/content/repositories/snapshots/" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+
+dependencies {
+    compile "org.apache.wicket:wicket-core:$project.version_wicket"
+    compile "org.apache.logging.log4j:log4j-slf4j-impl:$project.version_log4j"
+    compile "org.apache.logging.log4j:log4j-core:$project.version_log4j"
+
+    testCompile "junit:junit:$project.version_junit"
+    testCompile "org.eclipse.jetty:jetty-server:$project.version_jetty"
+    testCompile "org.eclipse.jetty:jetty-webapp:$project.version_jetty"
+    testCompile "org.eclipse.jetty:jetty-util:$project.version_jetty"
+    testCompile "org.eclipse.jetty:jetty-jmx:$project.version_jetty"
+
+    gretty "org.eclipse.jetty:jetty-server:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-servlet:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-webapp:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-security:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-jsp:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-annotations:$project.version_jetty"
+    gretty "org.eclipse.jetty:jetty-plus:$project.version_jetty"
+}
+
+gretty {
+    servletContainer = 'jetty9'
+    contextPath      = '/'
+    jvmArgs          = ["-Djetty.keystore=$project.projectDir/src/test/resources/keystore"]
+    serverConfigFile = "$project.projectDir/src/test/jetty/jetty.xml"
+}
