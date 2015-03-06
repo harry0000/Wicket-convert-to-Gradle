@@ -51,6 +51,11 @@ dependencies {
     gretty "org.eclipse.jetty:jetty-plus:$project.version_jetty"
 }
 
+javadoc {
+    source    += sourceSets.test.java.include("com/github/harry0000/Start.java")
+    classpath += configurations.testCompile
+}
+
 gretty {
     servletContainer = 'jetty9'
     contextPath      = '/'
