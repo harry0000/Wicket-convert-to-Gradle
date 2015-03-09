@@ -20,12 +20,6 @@ tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
 
-clean.dependsOn 'cleanAdditional'
-task cleanAdditional(type: Delete) {
-    delete 'bin'
-    delete 'target'
-}
-
 repositories {
      maven { url "https://repository.apache.org/content/repositories/snapshots/" }
      maven { url "http://repo.maven.apache.org/maven2" }
@@ -49,6 +43,10 @@ dependencies {
     gretty "org.eclipse.jetty:jetty-jsp:$project.version_jetty"
     gretty "org.eclipse.jetty:jetty-annotations:$project.version_jetty"
     gretty "org.eclipse.jetty:jetty-plus:$project.version_jetty"
+}
+
+clean {
+    delete 'bin', 'target'
 }
 
 javadoc {
