@@ -50,8 +50,7 @@ clean {
 }
 
 javadoc {
-    source    += sourceSets.test.java.include("com/github/harry0000/Start.java")
-    classpath += configurations.testCompile
+    classpath += sourceSets.test.output
 }
 
 gretty {
